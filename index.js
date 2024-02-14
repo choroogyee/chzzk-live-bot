@@ -9,13 +9,15 @@ const { Client, Events, GatewayIntentBits, REST } = require('discord.js');
 
 const { sequelize } = require('./lib/db');
 
+const discord = require('discord.js');
+const { ActivityType } = require('discord.js');
+
 // Create a new client instance
 const client = new Client({
   intents: [GatewayIntentBits.Guilds],
 });
 
 const token = process.env.TOKEN;
-
 // Construct and prepare an instance of the REST module
 const rest = new REST({ version: '10' }).setToken(token);
 
@@ -39,7 +41,11 @@ client.once(Events.ClientReady, async (c) => {
         for (const uid of user_list) {
             await chzzkNotifier(c, uid);
         }
-    });
+
+    c.user.setActivity('앤슈방송', { type: ActivityType.Watching });
+});
+
+    
 
   console.log(`[Discord] Logged in as ${c.user.tag}`);
 });
